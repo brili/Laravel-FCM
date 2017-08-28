@@ -39,7 +39,7 @@ class FCMSender extends HTTPSender
         if (is_array($to) && !empty($to)) {
             $partialTokens = array_chunk($to, self::MAX_TOKEN_PER_REQUEST, false);
             foreach ($partialTokens as $tokens) {
-                $request = new Request($tokens, $options, $notification, $data, $dynamicConfig);
+                $request = new Request($tokens, $options, $notification, $data, null, $dynamicConfig);
 
                 $responseGuzzle = $this->post($request);
 
@@ -51,7 +51,7 @@ class FCMSender extends HTTPSender
                 }
             }
         } else {
-            $request = new Request($to, $options, $notification, $data, $dynamicConfig);
+            $request = new Request($to, $options, $notification, $data, null, $dynamicConfig);
             $responseGuzzle = $this->post($request);
 
             $response = new DownstreamResponse($responseGuzzle, $to);
@@ -72,7 +72,7 @@ class FCMSender extends HTTPSender
      */
     public function sendToGroup($notificationKey, Options $options = null, PayloadNotification $notification = null, PayloadData $data = null, $dynamicConfig = null)
     {
-        $request = new Request($notificationKey, $options, $notification, $data, $dynamicConfig);
+        $request = new Request($notificationKey, $options, $notification, $data, null, $dynamicConfig);
 
         $responseGuzzle = $this->post($request);
 

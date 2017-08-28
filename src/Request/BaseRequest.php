@@ -28,7 +28,7 @@ abstract class BaseRequest
      */
     public function __construct($dConfig)
     {
-        $this->$dynamicConfig = $dConfig;
+        $this->dynamicConfig = $dConfig;
         $this->config = app('config')->get('fcm.http', []);
     }
 
@@ -63,6 +63,7 @@ abstract class BaseRequest
         return [
             'headers' => $this->buildRequestHeader(),
             'json' => $this->buildBody(),
+            'verify' => false
         ];
     }
 }
