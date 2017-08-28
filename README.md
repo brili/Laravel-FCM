@@ -140,7 +140,10 @@ $data = $dataBuilder->build();
 
 $token = "a_registration_from_your_database";
 
-$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+//Support for multiple Applications
+//$dynamicConfig = ["sender_id" => "example_server_key", "server_key" => "example_server_key"]
+
+$downstreamResponse = FCM::sendTo($token, $option, $notification, $data, $dynamicConfig);
 
 $downstreamResponse->numberSuccess();
 $downstreamResponse->numberFailure();
@@ -178,7 +181,9 @@ $data = $dataBuilder->build();
 // You must change it to get your tokens
 $tokens = MYDATABASE::pluck('fcm_token')->toArray();
 
-$downstreamResponse = FCM::sendTo($tokens, $option, $notification);
+//$dynamicConfig = ["sender_id" => "example_server_key", "server_key" => "example_server_key"]
+
+$downstreamResponse = FCM::sendTo($tokens, $option, $notification, null, $dynamicConfig);
 
 $downstreamResponse->numberSuccess();
 $downstreamResponse->numberFailure(); 
@@ -221,7 +226,9 @@ $notification = $notificationBuilder->build();
 $topic = new Topics();
 $topic->topic('news');
 
-$topicResponse = FCM::sendToTopic($topic, null, $notification, null)
+//$dynamicConfig = ["sender_id" => "example_server_key", "server_key" => "example_server_key"]
+
+$topicResponse = FCM::sendToTopic($topic, null, $notification, null, $dynamicConfig)
 
 $topicResponse->isSuccess();
 $topicResponse->shouldRetry();
