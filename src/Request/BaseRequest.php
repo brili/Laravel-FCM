@@ -21,11 +21,14 @@ abstract class BaseRequest
      */
     protected $config;
 
+    protected $dynamicConfig;
+
     /**
      * BaseRequest constructor.
      */
-    public function __construct()
+    public function __construct($dConfig)
     {
+        $this->$dynamicConfig = $dConfig;
         $this->config = app('config')->get('fcm.http', []);
     }
 
@@ -37,9 +40,9 @@ abstract class BaseRequest
     protected function buildRequestHeader()
     {
         return [
-            'Authorization' => 'key='.$this->config['server_key'],
+            'Authorization' => 'key='.$this->dynamicConfig['server_key'],
             'Content-Type' => 'application/json',
-            'project_id' => $this->config['sender_id'],
+            'project_id' => $this->dynamicConfig['sender_id'],
         ];
     }
 
