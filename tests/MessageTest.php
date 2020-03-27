@@ -1,5 +1,6 @@
 <?php
 
+use LaravelFCM\Message\Exceptions\InvalidOptionsException;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\OptionsPriorities;
 use LaravelFCM\Message\PayloadDataBuilder;
@@ -90,6 +91,7 @@ class PayloadTest extends FCMTestCase
         $targetFull = '{
 					"title":"test_title",
 					"body":"test_body",
+					"android_channel_id":"test_channel_id",
 					"badge":"test_badge",
 					"sound":"test_sound",
 					"tag":"test_tag",
@@ -112,7 +114,9 @@ class PayloadTest extends FCMTestCase
         $json = json_encode($notificationBuilder->build()->toArray());
         $this->assertJsonStringEqualsJsonString($targetPartial, $json);
 
-        $notificationBuilder->setTag('test_tag')
+        $notificationBuilder
+                    ->setChannelId('test_channel_id')
+                    ->setTag('test_tag')
                     ->setColor('test_color')
                     ->setClickAction('test_click_action')
                     ->setBodyLocationKey('test_body_key')
@@ -123,5 +127,17 @@ class PayloadTest extends FCMTestCase
 
         $json = json_encode($notificationBuilder->build()->toArray());
         $this->assertJsonStringEqualsJsonString($targetFull, $json);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_invalidoptionsexception_if_the_interval_is_too_big()
+    {
+        $this->setExpectedException(InvalidOptionsException::class);
+
+        $optionBuilder = new OptionsBuilder();
+        $optionBuilder->setTimeToLive(2419200 * 10);
+
     }
 }
